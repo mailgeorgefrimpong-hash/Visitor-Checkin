@@ -1,0 +1,199 @@
+/* Kiosk-specific overrides — bigger, touch-friendly, full-screen hero.
+   Reuses the Fluent 2 tokens defined in style.css. */
+
+.kiosk-body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% -10%, var(--colorBrandTint) 0%, transparent 55%),
+    var(--colorNeutralBackground2);
+}
+
+.kiosk-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+  z-index: 0;
+}
+.kiosk-blob-a {
+  width: 420px;
+  height: 420px;
+  top: -140px;
+  left: -120px;
+  background: var(--colorBrandGradientStart);
+}
+.kiosk-blob-b {
+  width: 360px;
+  height: 360px;
+  bottom: -160px;
+  right: -100px;
+  background: var(--colorPaletteGreenForeground1);
+  opacity: 0.18;
+}
+
+.kiosk-wrap {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.kiosk-card {
+  width: min(90vw, 640px);
+  background: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke2);
+  border-radius: 20px;
+  box-shadow: var(--shadow16);
+  padding: 48px 56px;
+  text-align: center;
+  animation: fadeInUp 0.25s var(--easeStandard);
+}
+
+.kiosk-badge {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px auto;
+  border-radius: var(--borderRadiusXLarge);
+  background: linear-gradient(155deg, var(--colorBrandGradientStart), var(--colorBrandGradientEnd));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow8);
+}
+
+.kiosk-title {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--colorNeutralForeground1);
+  letter-spacing: -0.01em;
+}
+
+.kiosk-subtitle {
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--colorNeutralForeground3);
+  margin: 0 0 32px 0;
+}
+
+.kiosk-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.kiosk-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground2);
+}
+
+.kiosk-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.kiosk-field .icon {
+  position: absolute;
+  left: 16px;
+  color: var(--colorNeutralForeground3);
+  pointer-events: none;
+}
+
+.kiosk-field input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 20px;
+  padding: 16px 18px 16px 50px;
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusLarge);
+  background: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+  box-shadow: inset 0 -1px 0 0 var(--colorNeutralStroke1);
+  transition: box-shadow var(--durFast) var(--easeStandard);
+}
+
+.kiosk-field input:focus {
+  outline: none;
+  box-shadow: inset 0 -3px 0 0 var(--colorCompoundBrandStroke);
+}
+
+.kiosk-field input:focus + .icon,
+.kiosk-field input:focus ~ .icon {
+  color: var(--colorCompoundBrandStroke);
+}
+
+.kiosk-form button {
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacingM);
+  font-size: 22px;
+  font-weight: 700;
+  padding: 18px;
+  margin-top: 8px;
+  border: none;
+  border-radius: var(--borderRadiusLarge);
+  background: linear-gradient(155deg, var(--colorBrandGradientStart), var(--colorBrandGradientEnd));
+  color: var(--colorNeutralForegroundOnBrand);
+  cursor: pointer;
+  box-shadow: var(--shadow8);
+  transition: transform var(--durFast) var(--easeStandard), box-shadow var(--durFast) var(--easeStandard);
+}
+
+.kiosk-form button:hover { transform: translateY(-2px); box-shadow: var(--shadow16); }
+.kiosk-form button:active { transform: translateY(0); box-shadow: var(--shadow4); }
+.kiosk-form button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.kiosk-error {
+  margin-top: 8px;
+  padding: 12px 16px;
+  border-radius: var(--borderRadiusMedium);
+  background: var(--colorPaletteRedBackground1);
+  border: 1px solid var(--colorPaletteRedBorder1);
+  border-left: 4px solid var(--colorPaletteRedForeground1);
+  color: var(--colorPaletteRedForeground1);
+  font-size: 16px;
+  text-align: left;
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.6); }
+  60% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.kiosk-check {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 24px auto;
+  border-radius: 50%;
+  background: linear-gradient(155deg, #3fbf5f, var(--colorPaletteGreenForeground1));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow8);
+  animation: popIn 0.4s var(--easeStandard);
+}
+
+#confirmName {
+  display: block;
+  font-size: 22px;
+  color: var(--colorBrandForeground1);
+  margin-top: 4px;
+}

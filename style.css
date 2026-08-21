@@ -1,0 +1,522 @@
+/* ============================================================
+   Fluent 2 design tokens (Microsoft's design system — Web, light theme)
+   Hand-authored as CSS custom properties rather than pulling in the
+   Fluent web-components library, so this stays a dependency-light
+   static page — appropriate for a front-desk kiosk that must always
+   just work.
+   ============================================================ */
+:root {
+  /* Brand ramp */
+  --colorBrandBackground: #0f6cbd;
+  --colorBrandBackgroundHover: #115ea3;
+  --colorBrandBackgroundPressed: #0c3b5e;
+  --colorBrandForeground1: #115ea3;
+  --colorCompoundBrandStroke: #0f6cbd;
+  --colorBrandTint: #eff6fc;
+  --colorBrandGradientStart: #2886de;
+  --colorBrandGradientEnd: #0a4d85;
+
+  /* Neutral ramp */
+  --colorNeutralForeground1: #242424; /* primary text */
+  --colorNeutralForeground2: #424242; /* secondary text */
+  --colorNeutralForeground3: #616161; /* tertiary / labels */
+  --colorNeutralForegroundOnBrand: #ffffff;
+  --colorNeutralBackground1: #ffffff; /* cards/panels */
+  --colorNeutralBackground2: #f6f7f9; /* page canvas */
+  --colorNeutralBackground3: #f0f0f0; /* subtle fill */
+  --colorNeutralBackground1Hover: #f5f5f5;
+  --colorNeutralStroke1: #d1d1d1; /* default border */
+  --colorNeutralStroke2: #e5e5e5; /* subtle border */
+  --colorNeutralStrokeAccessible: #616161;
+  --colorStrokeFocus2: #000000;
+
+  /* Status ramps (Fluent palette, background1/foreground1/border) */
+  --colorPaletteRedBackground1: #fdf3f4;
+  --colorPaletteRedBorder1: #f1bbbc;
+  --colorPaletteRedForeground1: #b10e1c;
+  --colorPaletteGreenBackground1: #f1faf1;
+  --colorPaletteGreenBorder1: #9fd89f;
+  --colorPaletteGreenForeground1: #0e700e;
+  --colorPaletteGreenTint: #dff3df;
+  --colorPaletteMarigoldBackground1: #fdf6ec;
+  --colorPaletteMarigoldBorder1: #f0d199;
+  --colorPaletteMarigoldForeground1: #835c00;
+
+  /* Shape */
+  --borderRadiusMedium: 4px;
+  --borderRadiusLarge: 8px;
+  --borderRadiusXLarge: 12px;
+  --borderRadiusCircular: 999px;
+
+  /* Elevation */
+  --shadow2: 0 0 2px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.12);
+  --shadow4: 0 0 2px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.10);
+  --shadow8: 0 0 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.12);
+  --shadow16: 0 0 2px rgba(0,0,0,0.08), 0 8px 28px rgba(0,0,0,0.16);
+
+  /* Motion */
+  --easeStandard: cubic-bezier(0.2, 0, 0, 1);
+  --durFast: 0.1s;
+  --durNormal: 0.18s;
+
+  /* Type ramp (Fluent 2 "Web" sizes) */
+  --fontFamilyBase: "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  --caption1FontSize: 12px;
+  --caption1LineHeight: 16px;
+  --body1FontSize: 14px;
+  --body1LineHeight: 20px;
+  --subtitle2FontSize: 16px;
+  --subtitle2LineHeight: 22px;
+  --title3FontSize: 20px;
+  --title3LineHeight: 26px;
+  --title2FontSize: 26px;
+  --title2LineHeight: 32px;
+
+  /* Spacing scale (4px base unit) */
+  --spacingXS: 4px;
+  --spacingS: 8px;
+  --spacingM: 12px;
+  --spacingL: 16px;
+  --spacingXL: 20px;
+  --spacingXXL: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colorBrandBackground: #115ea3;
+    --colorBrandBackgroundHover: #4f9ed9;
+    --colorBrandBackgroundPressed: #0c3b5e;
+    --colorBrandForeground1: #62abe4;
+    --colorCompoundBrandStroke: #479ef5;
+    --colorBrandTint: #12283b;
+    --colorBrandGradientStart: #3593e6;
+    --colorBrandGradientEnd: #0d3a63;
+
+    --colorNeutralForeground1: #f5f5f5;
+    --colorNeutralForeground2: #d6d6d6;
+    --colorNeutralForeground3: #b3b3b3;
+    --colorNeutralBackground1: #292929;
+    --colorNeutralBackground2: #1f1f1f;
+    --colorNeutralBackground3: #333333;
+    --colorNeutralBackground1Hover: #333333;
+    --colorNeutralStroke1: #484848;
+    --colorNeutralStroke2: #3d3d3d;
+    --colorNeutralStrokeAccessible: #b3b3b3;
+    --colorStrokeFocus2: #ffffff;
+
+    --colorPaletteRedBackground1: #3b1112;
+    --colorPaletteRedBorder1: #8b2b2f;
+    --colorPaletteRedForeground1: #ff9a9d;
+    --colorPaletteGreenBackground1: #102e10;
+    --colorPaletteGreenBorder1: #2f6d2f;
+    --colorPaletteGreenForeground1: #6ccb6c;
+    --colorPaletteGreenTint: #1b3a1b;
+    --colorPaletteMarigoldBackground1: #3a2c0c;
+    --colorPaletteMarigoldBorder1: #7a5a17;
+    --colorPaletteMarigoldForeground1: #e8c46a;
+
+    --shadow2: 0 0 2px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.4);
+    --shadow4: 0 0 2px rgba(0,0,0,0.3), 0 2px 6px rgba(0,0,0,0.4);
+    --shadow8: 0 0 2px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.5);
+    --shadow16: 0 0 2px rgba(0,0,0,0.3), 0 8px 28px rgba(0,0,0,0.55);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--fontFamilyBase);
+  font-size: var(--body1FontSize);
+  line-height: var(--body1LineHeight);
+  background: var(--colorNeutralBackground2);
+  color: var(--colorNeutralForeground1);
+}
+
+:focus-visible {
+  outline: 2px solid var(--colorStrokeFocus2);
+  outline-offset: 2px;
+}
+
+.icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+.icon-sm { width: 16px; height: 16px; }
+.icon-lg { width: 28px; height: 28px; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacingM) var(--spacingXXL);
+  background: var(--colorNeutralBackground1);
+  box-shadow: 0 1px 0 var(--colorNeutralStroke2), var(--shadow2);
+  position: relative;
+  z-index: 5;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingM);
+}
+
+.logo-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--borderRadiusMedium);
+  background: linear-gradient(155deg, var(--colorBrandGradientStart), var(--colorBrandGradientEnd));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow4);
+}
+
+.logo-mark .icon { width: 19px; height: 19px; }
+
+.topbar h1 {
+  font-size: var(--subtitle2FontSize);
+  line-height: var(--subtitle2LineHeight);
+  margin: 0;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+}
+
+#authArea {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingM);
+}
+
+#userLabel {
+  font-size: var(--caption1FontSize);
+  color: var(--colorNeutralForeground3);
+}
+
+/* ---------- Buttons (shared system) ---------- */
+.btn {
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacingS);
+  border-radius: var(--borderRadiusMedium);
+  padding: 8px 16px;
+  font-size: var(--body1FontSize);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color var(--durFast) var(--easeStandard),
+              box-shadow var(--durFast) var(--easeStandard),
+              transform var(--durFast) var(--easeStandard);
+}
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--colorBrandBackground);
+  color: var(--colorNeutralForegroundOnBrand);
+  box-shadow: var(--shadow2);
+}
+.btn-primary:hover { background: var(--colorBrandBackgroundHover); box-shadow: var(--shadow4); transform: translateY(-1px); }
+.btn-primary:active { background: var(--colorBrandBackgroundPressed); transform: translateY(0); box-shadow: var(--shadow2); }
+
+.btn-secondary {
+  background: var(--colorNeutralBackground1);
+  border-color: var(--colorNeutralStroke1);
+  color: var(--colorNeutralForeground1);
+}
+.btn-secondary:hover { background: var(--colorNeutralBackground1Hover); transform: translateY(-1px); box-shadow: var(--shadow2); }
+.btn-secondary:active { transform: translateY(0); box-shadow: none; }
+
+/* ---------- Layout ---------- */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--spacingXXL);
+}
+
+.stats-row {
+  display: flex;
+  gap: var(--spacingL);
+  align-items: stretch;
+  margin-bottom: var(--spacingXL);
+  animation: fadeInUp var(--durNormal) var(--easeStandard);
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingM);
+  background: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke2);
+  border-radius: var(--borderRadiusXLarge);
+  box-shadow: var(--shadow4);
+  padding: var(--spacingL) var(--spacingXL);
+  min-width: 160px;
+  transition: box-shadow var(--durNormal) var(--easeStandard), transform var(--durNormal) var(--easeStandard);
+}
+
+.stat-card:hover { box-shadow: var(--shadow8); transform: translateY(-2px); }
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--borderRadiusLarge);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.stat-icon-brand { background: var(--colorBrandTint); color: var(--colorBrandForeground1); }
+.stat-icon-green { background: var(--colorPaletteGreenTint); color: var(--colorPaletteGreenForeground1); }
+
+.stat-value {
+  font-size: var(--title2FontSize);
+  line-height: var(--title2LineHeight);
+  font-weight: 700;
+  color: var(--colorNeutralForeground1);
+}
+
+.stat-label {
+  font-size: var(--caption1FontSize);
+  color: var(--colorNeutralForeground3);
+}
+
+.refresh-btn { margin-left: auto; align-self: center; }
+
+.panel {
+  background: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke2);
+  border-radius: var(--borderRadiusXLarge);
+  box-shadow: var(--shadow4);
+  padding: var(--spacingXL);
+  margin-bottom: var(--spacingXL);
+  animation: fadeInUp var(--durNormal) var(--easeStandard);
+}
+
+.panel h2 {
+  margin: 0 0 var(--spacingL) 0;
+  font-size: var(--caption1FontSize);
+  line-height: var(--caption1LineHeight);
+  font-weight: 700;
+  color: var(--colorNeutralForeground3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.panel-note {
+  margin: -8px 0 var(--spacingL) 0;
+  font-size: var(--caption1FontSize);
+  color: var(--colorNeutralForeground3);
+}
+
+.flagged-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingM);
+  margin-bottom: var(--spacingL);
+  background: var(--colorPaletteRedBackground1);
+  border: 1px solid var(--colorPaletteRedBorder1);
+  border-left: 4px solid var(--colorPaletteRedForeground1);
+  color: var(--colorPaletteRedForeground1);
+  padding: var(--spacingM) var(--spacingL);
+  border-radius: var(--borderRadiusLarge);
+  font-size: var(--body1FontSize);
+  font-weight: 600;
+  box-shadow: var(--shadow4);
+  animation: fadeInUp var(--durNormal) var(--easeStandard);
+}
+
+/* ---------- Check-in form ---------- */
+.checkin-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacingL);
+  align-items: end;
+}
+
+.checkin-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--caption1FontSize);
+  font-weight: 600;
+  color: var(--colorNeutralForeground2);
+  gap: var(--spacingXS);
+}
+
+.checkin-form input {
+  font-family: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+  background: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+  font-size: var(--body1FontSize);
+  box-shadow: inset 0 -1px 0 0 var(--colorNeutralStroke1);
+  transition: box-shadow var(--durFast) var(--easeStandard), border-color var(--durFast) var(--easeStandard);
+}
+
+.checkin-form input:hover { border-color: var(--colorNeutralStrokeAccessible); }
+
+.checkin-form input:focus {
+  outline: none;
+  border-color: var(--colorNeutralStroke1);
+  box-shadow: inset 0 -2px 0 0 var(--colorCompoundBrandStroke);
+}
+
+.checkin-form button { grid-column: 1 / -1; justify-content: center; padding: 10px; }
+
+/* ---------- Message surfaces (Fluent MessageBar-style) ---------- */
+.watchlist-alert,
+.form-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacingM);
+  margin-top: var(--spacingL);
+  padding: var(--spacingM) var(--spacingL);
+  border-radius: var(--borderRadiusLarge);
+  font-size: var(--body1FontSize);
+  box-shadow: var(--shadow2);
+}
+
+.watchlist-alert {
+  background: var(--colorPaletteMarigoldBackground1);
+  border: 1px solid var(--colorPaletteMarigoldBorder1);
+  border-left: 4px solid var(--colorPaletteMarigoldForeground1);
+  color: var(--colorPaletteMarigoldForeground1);
+}
+
+.form-msg {
+  background: var(--colorPaletteGreenBackground1);
+  border: 1px solid var(--colorPaletteGreenBorder1);
+  border-left: 4px solid var(--colorPaletteGreenForeground1);
+  color: var(--colorPaletteGreenForeground1);
+}
+
+.form-msg.error {
+  background: var(--colorPaletteRedBackground1);
+  border: 1px solid var(--colorPaletteRedBorder1);
+  border-left: 4px solid var(--colorPaletteRedForeground1);
+  color: var(--colorPaletteRedForeground1);
+}
+
+.msg-icon-error { color: var(--colorPaletteRedForeground1); }
+
+/* ---------- Tables ---------- */
+.visitors-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--body1FontSize);
+}
+
+.visitors-table th {
+  text-align: left;
+  padding: var(--spacingS) var(--spacingM);
+  border-bottom: 1px solid var(--colorNeutralStroke1);
+  color: var(--colorNeutralForeground3);
+  font-size: var(--caption1FontSize);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.visitors-table td {
+  padding: var(--spacingM) var(--spacingM);
+  border-bottom: 1px solid var(--colorNeutralStroke2);
+  color: var(--colorNeutralForeground1);
+  transition: background-color var(--durFast) var(--easeStandard);
+}
+
+.visitors-table tbody tr:hover td {
+  background: var(--colorNeutralBackground1Hover);
+}
+
+.visitors-table tbody tr.row-flagged td {
+  background: var(--colorPaletteRedBackground1);
+}
+.visitors-table tbody tr.row-flagged:hover td {
+  background: var(--colorPaletteRedBackground1);
+  filter: brightness(0.97);
+}
+
+.name-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacingM);
+  font-weight: 600;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--borderRadiusCircular);
+  background: var(--colorBrandTint);
+  color: var(--colorBrandForeground1);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-flagged {
+  background: var(--colorPaletteRedForeground1);
+  color: #fff;
+}
+
+.empty-row {
+  color: var(--colorNeutralForeground3);
+  text-align: center;
+  padding: var(--spacingXXL);
+}
+
+.checkout-btn { padding: 6px 14px; font-size: var(--caption1FontSize); }
+
+/* ---------- Status badges (Fluent Badge-style) ---------- */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: var(--borderRadiusCircular);
+  font-size: var(--caption1FontSize);
+  font-weight: 700;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-in {
+  background: var(--colorPaletteGreenBackground1);
+  color: var(--colorPaletteGreenForeground1);
+}
+.status-out {
+  background: var(--colorNeutralBackground3);
+  color: var(--colorNeutralForeground3);
+}
+
+/* ---------- Toast ---------- */
+.global-msg {
+  position: fixed;
+  bottom: var(--spacingXL);
+  right: var(--spacingXL);
+  background: var(--colorNeutralForeground1);
+  color: var(--colorNeutralBackground1);
+  padding: var(--spacingM) var(--spacingL);
+  border-radius: var(--borderRadiusLarge);
+  box-shadow: var(--shadow16);
+  font-size: var(--body1FontSize);
+  max-width: 320px;
+}
+
+.hidden { display: none !important; }

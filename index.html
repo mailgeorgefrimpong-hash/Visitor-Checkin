@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Visitor Check-In</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="kiosk.css" />
+</head>
+<body class="kiosk-body">
+
+  <div class="kiosk-blob kiosk-blob-a"></div>
+  <div class="kiosk-blob kiosk-blob-b"></div>
+
+  <main class="kiosk-wrap">
+    <div class="kiosk-card">
+
+      <div id="kioskForm">
+        <div class="kiosk-badge">
+          <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 21v-4h6v4"/><path d="M8 7h1M8 11h1M15 7h1M15 11h1"/></svg>
+        </div>
+        <h1 class="kiosk-title">Welcome</h1>
+        <p class="kiosk-subtitle">Please check in below</p>
+
+        <form id="checkinForm" class="kiosk-form" autocomplete="off">
+          <label>
+            Your name
+            <div class="kiosk-field">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>
+              <input type="text" id="visitorName" required autocomplete="off" />
+            </div>
+          </label>
+          <label>
+            Phone number
+            <div class="kiosk-field">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h3l1.5 4.5L8 9.5a12 12 0 0 0 6.5 6.5l2-2.5L21 15v3a2 2 0 0 1-2 2C11 20 4 13 4 5a2 2 0 0 1 2-2z"/></svg>
+              <input type="tel" id="visitorPhone" required autocomplete="off" />
+            </div>
+          </label>
+          <label>
+            Who are you here to see?
+            <div class="kiosk-field">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><circle cx="12" cy="10" r="2.2"/><path d="M8 16.5c0-1.9 1.8-3 4-3s4 1.1 4 3"/></svg>
+              <input type="text" id="visitorHost" required autocomplete="off" />
+            </div>
+          </label>
+          <button type="submit" id="checkinBtn">
+            Check In
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <div id="kioskError" class="kiosk-error hidden"></div>
+        </form>
+      </div>
+
+      <div id="kioskConfirm" class="kiosk-confirm hidden">
+        <div class="kiosk-check">
+          <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l5 5L19 7"/></svg>
+        </div>
+        <h1 class="kiosk-title">You're checked in<span id="confirmName"></span></h1>
+        <p class="kiosk-subtitle">Please have a seat — someone will be with you shortly.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="kiosk-config.js"></script>
+  <script src="kiosk.js"></script>
+</body>
+</html>
