@@ -4,4 +4,11 @@
 //   URL (see cloudflare-worker/README.md) and re-publish this file.
 window.KIOSK_CONFIG = {
   checkinEndpoint: "/api/checkin",
+
+  // Optional bot/abuse protection (Cloudflare Turnstile). Leave null until
+  // you've set up a Turnstile widget in the Cloudflare dashboard — this is
+  // the PUBLIC site key (safe to expose here). The matching SECRET key goes
+  // server-side only, as the Worker's TURNSTILE_SECRET_KEY variable — see
+  // cloudflare-worker/README.md. Both must be set together, or neither.
+  turnstileSiteKey: null,
 };
