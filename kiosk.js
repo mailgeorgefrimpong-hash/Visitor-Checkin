@@ -34,7 +34,10 @@ function validatePhone(raw) {
   }
   if (digits.startsWith("0")) {
     if (digits.length !== 10) {
-      return { ok: false, message: `Ghana numbers starting with 0 should have 10 digits total (this has ${digits.length}).` };
+      return {
+        ok: false,
+        message: `Ghana numbers starting with 0 should have 10 digits total (this has ${digits.length}). If this is actually a foreign number, enter it with your country's + code instead of a leading 0 (e.g. +44 20 7946 0958).`,
+      };
     }
     return { ok: true };
   }
