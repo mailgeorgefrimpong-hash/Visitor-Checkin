@@ -1,12 +1,20 @@
 /* ============================================================
    Fluent 2 design tokens (Microsoft's design system — Web, light theme),
-   re-themed to the 24H+ Secretariat's own brand (colors + wordmark font
-   sampled directly from 24hplus.gov.gh — the logo's sunrise → farmland →
-   river mark reads as green/yellow-green/teal, and headings there use
-   Rubik over a Roboto body face). Hand-authored as CSS custom properties
-   rather than pulling in the Fluent web-components library, so this
-   stays a dependency-light static page — appropriate for a front-desk
-   kiosk that must always just work.
+   re-themed to the 24H+ Secretariat's own brand colors (sampled
+   directly from 24hplus.gov.gh's logo and CTA buttons). Hand-authored
+   as CSS custom properties rather than pulling in the Fluent
+   web-components library, so this stays a dependency-light static
+   page — appropriate for a front-desk kiosk that must always just
+   work.
+
+   Deliberately ONE typeface (Roboto), not a body/display pairing —
+   hierarchy comes from size, spacing, and color, not from stacking a
+   second font on top of heavier weights. A second display face plus
+   700/800 weight everywhere read as loud rather than premium; a
+   single face with a wider, more restrained weight range (400/500/600
+   — 700 reserved for numbers and primary CTAs only) reads calmer and
+   more institutional, which is the brief this system is actually
+   serving.
    ============================================================ */
 :root {
   /* Brand ramp — 24H+ green (from the wordmark's "OUR/ECONOMY" text and
@@ -65,35 +73,42 @@
   --shadow8: 0 0 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.12);
   --shadow16: 0 0 2px rgba(0,0,0,0.08), 0 8px 28px rgba(0,0,0,0.16);
 
-  /* Motion */
+  /* Motion — --easeStandard for ordinary state changes (hover, focus,
+     color/shadow shifts); --easeSpring for moments that should feel
+     alive rather than mechanical (primary CTA press, a card arriving,
+     a checkmark landing) — a slight overshoot, not a bounce. */
   --easeStandard: cubic-bezier(0.2, 0, 0, 1);
+  --easeSpring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --durFast: 0.1s;
   --durNormal: 0.18s;
+  --durSlow: 0.32s;
 
-  /* Type ramp (Fluent 2 "Web" sizes) — Roboto/Rubik sampled from
-     24hplus.gov.gh (Roboto for body copy, Rubik for headings there).
-     Loaded via Google Fonts in each HTML file's <head>; the system-font
-     fallback chain still runs first-paint before the web font loads. */
+  /* Type ramp (Fluent 2 "Web" sizes) — Roboto, sampled from
+     24hplus.gov.gh's own body copy. Loaded via Google Fonts in each
+     HTML file's <head>; the system-font fallback chain still runs
+     first-paint before the web font loads. */
   --fontFamilyBase: "Roboto", "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
-  --fontFamilyDisplay: "Rubik", "Roboto", "Segoe UI Variable Text", -apple-system, BlinkMacSystemFont, sans-serif;
   --caption1FontSize: 12px;
   --caption1LineHeight: 16px;
   --body1FontSize: 14px;
   --body1LineHeight: 20px;
-  --subtitle2FontSize: 16px;
-  --subtitle2LineHeight: 22px;
-  --title3FontSize: 20px;
-  --title3LineHeight: 26px;
-  --title2FontSize: 26px;
-  --title2LineHeight: 32px;
+  --subtitle2FontSize: 17px;
+  --subtitle2LineHeight: 24px;
+  --title3FontSize: 22px;
+  --title3LineHeight: 28px;
+  --title2FontSize: 30px;
+  --title2LineHeight: 36px;
 
-  /* Spacing scale (4px base unit) */
+  /* Spacing scale (4px base unit) — kept, but applied with more
+     intentional rhythm below: tight within a group (label to its
+     input), looser between groups (one panel to the next). */
   --spacingXS: 4px;
   --spacingS: 8px;
   --spacingM: 12px;
   --spacingL: 16px;
   --spacingXL: 20px;
   --spacingXXL: 24px;
+  --spacingXXXL: 32px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -194,31 +209,36 @@ body {
   gap: var(--spacingM);
 }
 
-/* The 24H+ mark is itself full-color (green/yellow-green/teal) — a white
-   card behind it (rather than a colored gradient square, which would
-   fight the logo's own colors) is what makes it read clearly on both
-   the light dashboard topbar and the kiosk's dark hero. */
+/* The 24H+ mark rendered as a flat, single-color glyph — not the
+   full-color artwork on a white card. A multi-color sticker sitting on
+   its own white tile next to plain UI text reads as decoration, not as
+   part of the interface; a monochrome mark in the brand color sits
+   directly on the surface like any other system icon and reads as
+   more considered. CSS mask recolors the source PNG's silhouette
+   (alpha channel only) to `color`, so no separate flattened asset is
+   needed and it inherits whichever brand shade fits light vs. dark
+   automatically via --colorCompoundBrandStroke. */
 .logo-mark {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--borderRadiusMedium);
-  background: #ffffff;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow4);
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
+  background-color: var(--colorCompoundBrandStroke);
+  -webkit-mask-image: url("assets/24hplus-icon-mark.png");
+  mask-image: url("assets/24hplus-icon-mark.png");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
-.logo-mark img { width: 100%; height: 100%; object-fit: contain; }
-
 .topbar h1 {
-  font-family: var(--fontFamilyDisplay);
   font-size: var(--subtitle2FontSize);
   line-height: var(--subtitle2LineHeight);
   margin: 0;
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: -0.005em;
   color: var(--colorNeutralForeground1);
 }
 
@@ -242,20 +262,42 @@ body {
   border-radius: var(--borderRadiusMedium);
   padding: 8px 16px;
   font-size: var(--body1FontSize);
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   border: 1px solid transparent;
   transition: background-color var(--durFast) var(--easeStandard),
               box-shadow var(--durFast) var(--easeStandard),
-              transform var(--durFast) var(--easeStandard);
+              transform var(--durNormal) var(--easeSpring);
 }
 
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn:active:not(:disabled) { transform: scale(0.97); }
 
+/* Loading state — swapped in via JS while a request is in flight, so a
+   slow network reads as "working", not "did I press it?". The button
+   keeps its size (no layout jump) since both labels occupy the same
+   slot; only one is ever visible. */
+.btn-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacingM);
+}
+
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: btnSpin 0.7s linear infinite;
+}
+
 .btn-primary {
   background: var(--colorBrandBackground);
   color: var(--colorNeutralForegroundOnBrand);
+  font-weight: 600;
   box-shadow: var(--shadow2);
 }
 .btn-primary:hover { background: var(--colorBrandBackgroundHover); box-shadow: var(--shadow4); transform: translateY(-1px); }
@@ -273,15 +315,14 @@ body {
 main {
   max-width: 900px;
   margin: 0 auto;
-  padding: var(--spacingXXL);
+  padding: var(--spacingXXXL) var(--spacingXXL);
 }
 
 .stats-row {
   display: flex;
   gap: var(--spacingL);
   align-items: stretch;
-  margin-bottom: var(--spacingXL);
-  animation: fadeInUp var(--durNormal) var(--easeStandard);
+  margin-bottom: var(--spacingXXL);
 }
 
 .stat-card {
@@ -294,8 +335,10 @@ main {
   box-shadow: var(--shadow4);
   padding: var(--spacingL) var(--spacingXL);
   min-width: 160px;
-  transition: box-shadow var(--durNormal) var(--easeStandard), transform var(--durNormal) var(--easeStandard);
+  animation: fadeInUp var(--durNormal) var(--easeStandard) both;
+  transition: box-shadow var(--durNormal) var(--easeStandard), transform var(--durNormal) var(--easeSpring);
 }
+.stat-card:nth-child(2) { animation-delay: 0.04s; }
 
 .stat-card:hover { box-shadow: var(--shadow8); transform: translateY(-2px); }
 
@@ -313,10 +356,10 @@ main {
 .stat-icon-teal { background: var(--colorAccentTealTint); color: var(--colorAccentTeal); }
 
 .stat-value {
-  font-family: var(--fontFamilyDisplay);
   font-size: var(--title2FontSize);
   line-height: var(--title2LineHeight);
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--colorNeutralForeground1);
   font-variant-numeric: tabular-nums;
 }
@@ -328,13 +371,19 @@ main {
 
 .refresh-btn { margin-left: auto; align-self: center; }
 
+/* Spins the refresh icon while a refresh is actually in flight (toggled
+   in app.js) — confirms the click registered instead of leaving staff
+   wondering whether it did anything, especially on a slower connection. */
+@keyframes spin { to { transform: rotate(360deg); } }
+.refresh-btn.is-refreshing .icon { animation: spin 0.6s linear infinite; }
+
 .panel {
   background: var(--colorNeutralBackground1);
   border: 1px solid var(--colorNeutralStroke2);
   border-radius: var(--borderRadiusXLarge);
   box-shadow: var(--shadow4);
-  padding: var(--spacingXL);
-  margin-bottom: var(--spacingXL);
+  padding: var(--spacingXXL);
+  margin-bottom: var(--spacingXXL);
   animation: fadeInUp var(--durNormal) var(--easeStandard);
 }
 
@@ -365,18 +414,20 @@ main {
   color: var(--colorNeutralForeground1);
 }
 
+/* Sentence case, not all-caps-and-tracked — a section label doesn't
+   need to shout to be found; size and position already do that job.
+   All-caps at 700 weight was competing with everything else for
+   attention instead of quietly organizing the page. */
 .panel h2 {
   margin: 0 0 var(--spacingL) 0;
-  font-size: var(--caption1FontSize);
-  line-height: var(--caption1LineHeight);
-  font-weight: 700;
-  color: var(--colorNeutralForeground3);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: var(--subtitle2FontSize);
+  line-height: var(--subtitle2LineHeight);
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
 }
 
 .panel-note {
-  margin: -8px 0 var(--spacingL) 0;
+  margin: -4px 0 var(--spacingL) 0;
   font-size: var(--caption1FontSize);
   color: var(--colorNeutralForeground3);
 }
@@ -417,7 +468,7 @@ main {
   display: flex;
   flex-direction: column;
   font-size: var(--caption1FontSize);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--colorNeutralForeground2);
   gap: var(--spacingXS);
 }
@@ -456,7 +507,9 @@ main {
 .checkin-form select:focus {
   outline: none;
   border-color: var(--colorNeutralStroke1);
-  box-shadow: inset 0 -2px 0 0 var(--colorCompoundBrandStroke);
+  box-shadow:
+    inset 0 -2px 0 0 var(--colorCompoundBrandStroke),
+    0 0 0 3px color-mix(in srgb, var(--colorCompoundBrandStroke) 14%, transparent);
 }
 
 .checkin-form button { grid-column: 1 / -1; justify-content: center; padding: 10px; }
@@ -472,6 +525,7 @@ main {
   border-radius: var(--borderRadiusLarge);
   font-size: var(--body1FontSize);
   box-shadow: var(--shadow2);
+  animation: fadeInUp var(--durNormal) var(--easeStandard);
 }
 
 .watchlist-alert {
@@ -514,7 +568,7 @@ main {
   padding: 2px 10px;
   border-radius: var(--borderRadiusCircular);
   font-size: var(--caption1FontSize);
-  font-weight: 600;
+  font-weight: 500;
 }
 .purpose-official { background: var(--colorBrandTint); color: var(--colorBrandForeground1); }
 .purpose-personal { background: var(--colorNeutralBackground3); color: var(--colorNeutralForeground2); }
@@ -522,13 +576,12 @@ main {
 
 .visitors-table th {
   text-align: left;
-  padding: var(--spacingS) var(--spacingM);
+  padding: var(--spacingM) var(--spacingM);
   border-bottom: 1px solid var(--colorNeutralStroke1);
   color: var(--colorNeutralForeground3);
   font-size: var(--caption1FontSize);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .visitors-table td {
@@ -554,7 +607,7 @@ main {
   display: inline-flex;
   align-items: center;
   gap: var(--spacingM);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .avatar {
@@ -564,7 +617,7 @@ main {
   background: var(--colorBrandTint);
   color: var(--colorBrandForeground1);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -616,7 +669,7 @@ main {
   padding: 3px 10px 3px 8px;
   border-radius: var(--borderRadiusCircular);
   font-size: var(--caption1FontSize);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .status-dot {
@@ -641,6 +694,10 @@ main {
 }
 
 /* ---------- Toast ---------- */
+/* A real enter/exit transition, not an instant class toggle — .hidden
+   still removes it from the layout for accessibility/space, but
+   .leaving plays a fade+slide-down first (app.js waits for that
+   transition to finish before adding .hidden). */
 .global-msg {
   position: fixed;
   bottom: var(--spacingXL);
@@ -656,10 +713,34 @@ main {
      20px right offset can push the left edge past x=0. Always leave
      room for the same offset on the left too. */
   max-width: min(320px, calc(100vw - 2 * var(--spacingXL)));
-  animation: fadeInUp var(--durNormal) var(--easeStandard);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--durNormal) var(--easeStandard), transform var(--durNormal) var(--easeStandard);
+}
+
+.global-msg.entering {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.global-msg.leaving {
+  opacity: 0;
+  transform: translateY(8px);
 }
 
 .hidden { display: none !important; }
+
+/* ---------- Staggered list entrance ---------- */
+/* Applied per-row by app.js with an incrementing animation-delay, so a
+   freshly rendered table reads as a brief cascade rather than
+   everything appearing in one flat block at once. */
+@keyframes rowEnter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.row-enter {
+  animation: rowEnter var(--durNormal) var(--easeStandard) both;
+}
 
 /* ============================================================
    Mobile — the dashboard is used mainly on iPhone-class phones

@@ -54,48 +54,66 @@
   box-shadow: var(--shadow16);
   padding: 48px 56px;
   text-align: center;
-  animation: fadeInUp 0.25s var(--easeStandard);
 }
 
-/* White card, not a colored gradient — the 24H+ mark is already full
-   color (green/yellow-green/teal); a colored background behind it would
-   fight those colors instead of letting the real logo read clearly. */
+/* Entrance choreography — the badge, title, subtitle, and form arrive
+   as a brief cascade instead of the whole card fading in as one flat
+   block. Each step's delay is short enough that it reads as "alive"
+   rather than "slow". */
+@keyframes kioskReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.kiosk-badge,
+.kiosk-title,
+.kiosk-subtitle,
+.kiosk-form {
+  animation: kioskReveal var(--durSlow) var(--easeStandard) both;
+}
+.kiosk-badge { animation-delay: 0s; }
+.kiosk-title { animation-delay: 0.06s; }
+.kiosk-subtitle { animation-delay: 0.11s; }
+.kiosk-form { animation-delay: 0.16s; }
+
+/* A flat, single-color glyph — not the full-color artwork on a white
+   tile. It sits directly on the card like a system icon, not like a
+   sticker; --colorCompoundBrandStroke gives it the same green as every
+   other brand accent. */
 .kiosk-badge {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 20px auto;
-  border-radius: var(--borderRadiusXLarge);
-  background: #ffffff;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow8);
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 24px auto;
+  background-color: var(--colorCompoundBrandStroke);
+  -webkit-mask-image: url("assets/24hplus-icon-mark.png");
+  mask-image: url("assets/24hplus-icon-mark.png");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
-
-.kiosk-badge img { width: 100%; height: 100%; object-fit: contain; }
 
 .kiosk-title {
-  font-family: var(--fontFamilyDisplay);
-  font-size: 32px;
-  line-height: 40px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
   color: var(--colorNeutralForeground1);
   letter-spacing: -0.01em;
 }
 
 .kiosk-subtitle {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 24px;
   color: var(--colorNeutralForeground3);
-  margin: 0 0 32px 0;
+  margin: 0 0 36px 0;
 }
 
 .kiosk-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
   text-align: left;
 }
 
@@ -104,7 +122,7 @@
   flex-direction: column;
   gap: 8px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--colorNeutralForeground2);
 }
 
@@ -158,7 +176,9 @@
 .kiosk-field input:focus,
 .kiosk-field select:focus {
   outline: none;
-  box-shadow: inset 0 -3px 0 0 var(--colorCompoundBrandStroke);
+  box-shadow:
+    inset 0 -3px 0 0 var(--colorCompoundBrandStroke),
+    0 0 0 4px color-mix(in srgb, var(--colorCompoundBrandStroke) 16%, transparent);
 }
 
 .kiosk-field input:focus + .icon,
@@ -168,12 +188,13 @@
 
 .kiosk-form button {
   font-family: inherit;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacingM);
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 19px;
+  font-weight: 600;
   padding: 18px;
   margin-top: 8px;
   border: none;
@@ -182,12 +203,16 @@
   color: var(--colorNeutralForegroundOnBrand);
   cursor: pointer;
   box-shadow: var(--shadow8);
-  transition: transform var(--durFast) var(--easeStandard), box-shadow var(--durFast) var(--easeStandard);
+  transition: transform var(--durNormal) var(--easeSpring), box-shadow var(--durNormal) var(--easeStandard);
 }
 
-.kiosk-form button:hover { transform: translateY(-2px); box-shadow: var(--shadow16); }
-.kiosk-form button:active { transform: translateY(0); box-shadow: var(--shadow4); }
-.kiosk-form button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.kiosk-form button:hover { transform: translateY(-2px) scale(1.01); box-shadow: var(--shadow16); }
+.kiosk-form button:active { transform: translateY(0) scale(0.98); box-shadow: var(--shadow4); }
+.kiosk-form button:disabled { opacity: 0.8; cursor: not-allowed; transform: none; }
+
+/* Bigger button here than the dashboard's — scale the shared spinner
+   (defined in style.css) up to match instead of it looking undersized. */
+.kiosk-form .btn-spinner { width: 20px; height: 20px; border-width: 2.5px; }
 
 .kiosk-error {
   margin-top: 8px;
@@ -201,24 +226,51 @@
   text-align: left;
 }
 
-@keyframes popIn {
-  0% { opacity: 0; transform: scale(0.6); }
-  60% { opacity: 1; transform: scale(1.08); }
-  100% { opacity: 1; transform: scale(1); }
+/* A brief, small shake draws the eye to a new error without being
+   alarming — noticeably more "something happened" than a silent
+   fade-in, which is easy to miss on a public kiosk someone is using
+   in a hurry. */
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
 }
+.kiosk-error.shake { animation: errorShake 0.4s var(--easeStandard); }
 
 .kiosk-check {
-  width: 96px;
-  height: 96px;
+  width: 88px;
+  height: 88px;
   margin: 0 auto 24px auto;
   border-radius: 50%;
-  background: linear-gradient(155deg, #3fbf5f, var(--colorPaletteGreenForeground1));
+  background: linear-gradient(155deg, var(--colorBrandGradientStart), var(--colorBrandGradientEnd));
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow8);
-  animation: popIn 0.4s var(--easeStandard);
+  animation: checkPop 0.45s var(--easeSpring) both;
+}
+
+@keyframes checkPop {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* The checkmark path draws itself in rather than appearing all at once
+   — a small, well-worn "success" convention, but a genuinely
+   satisfying one, and one static pop-scale on its own reads as static
+   next to everything else in this file now moving. */
+.kiosk-check svg path {
+  /* pathLength="1" on the <path> itself (see checkin.html) normalizes
+     the dash units to 0-1 regardless of the path's real geometry. */
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: checkDraw 0.3s var(--easeStandard) 0.25s forwards;
+}
+@keyframes checkDraw {
+  to { stroke-dashoffset: 0; }
 }
 
 #confirmName {

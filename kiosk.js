@@ -14,6 +14,8 @@ const form = document.getElementById("checkinForm");
 const btn = document.getElementById("checkinBtn");
 const errorBox = document.getElementById("kioskError");
 const confirmName = document.getElementById("confirmName");
+const btnLabel = document.getElementById("checkinBtnLabel");
+const btnLabelLoading = document.getElementById("checkinBtnLabel-loading");
 
 const nameInput = document.getElementById("visitorName");
 const phoneInput = document.getElementById("visitorPhone");
@@ -90,6 +92,8 @@ async function handleSubmit(e) {
   }
 
   btn.disabled = true;
+  btnLabel.classList.add("hidden");
+  btnLabelLoading.classList.remove("hidden");
   try {
     const turnstileToken = getTurnstileToken();
     const res = await fetch(window.KIOSK_CONFIG.checkinEndpoint, {
@@ -109,6 +113,8 @@ async function handleSubmit(e) {
     showError("Couldn't reach the front desk system. Please ask the front desk to check you in.");
   } finally {
     btn.disabled = false;
+    btnLabel.classList.remove("hidden");
+    btnLabelLoading.classList.add("hidden");
   }
 }
 
@@ -161,6 +167,12 @@ initTurnstile();
 function showError(text) {
   errorBox.textContent = text;
   errorBox.classList.remove("hidden");
+  // Restart the shake even if an error box is already showing (e.g. two
+  // rejections in a row) — removing then re-adding the class in the next
+  // frame forces the animation to replay instead of being a no-op.
+  errorBox.classList.remove("shake");
+  void errorBox.offsetWidth; // force reflow so the removal above "takes"
+  errorBox.classList.add("shake");
   // On short tablet viewports / with the on-screen keyboard open, the error
   // can land below the fold. Bring it into view instead of leaving it
   // scrolled off-frame where a visitor would never notice it.

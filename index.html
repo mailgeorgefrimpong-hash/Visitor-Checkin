@@ -6,7 +6,7 @@
 <title>Visitor Check-In</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Rubik:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 <link rel="stylesheet" href="kiosk.css" />
 </head>
@@ -19,9 +19,7 @@
     <div class="kiosk-card">
 
       <div id="kioskForm">
-        <div class="kiosk-badge">
-          <img src="assets/24hplus-icon-mark.png" alt="24H+" />
-        </div>
+        <div class="kiosk-badge" role="img" aria-label="24H+"></div>
         <h1 class="kiosk-title">Welcome</h1>
         <p class="kiosk-subtitle">Please check in below</p>
 
@@ -72,8 +70,14 @@
           </div>
           <div id="turnstileContainer" class="hidden"></div>
           <button type="submit" id="checkinBtn">
-            Check In
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span id="checkinBtnLabel" class="btn-label">
+              Check In
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+            <span id="checkinBtnLabel-loading" class="btn-label hidden">
+              <span class="btn-spinner"></span>
+              Checking in…
+            </span>
           </button>
           <div id="kioskError" class="kiosk-error hidden" role="alert" aria-live="assertive"></div>
         </form>
@@ -81,7 +85,7 @@
 
       <div id="kioskConfirm" class="kiosk-confirm hidden" role="status" aria-live="polite">
         <div class="kiosk-check">
-          <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l5 5L19 7"/></svg>
+          <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l5 5L19 7" pathLength="1"/></svg>
         </div>
         <h1 class="kiosk-title">You're checked in<span id="confirmName"></span></h1>
         <p class="kiosk-subtitle">Please have a seat — someone will be with you shortly.</p>
