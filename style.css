@@ -299,6 +299,33 @@ main {
   animation: fadeInUp var(--durNormal) var(--easeStandard);
 }
 
+.log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacingL);
+}
+
+.log-header h2 { margin-bottom: 0; }
+
+.log-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingS);
+}
+
+.log-nav .btn { padding: 6px 12px; }
+
+.log-date-input {
+  font-family: inherit;
+  font-size: var(--body1FontSize);
+  padding: 6px 10px;
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+  background: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+}
+
 .panel h2 {
   margin: 0 0 var(--spacingL) 0;
   font-size: var(--caption1FontSize);
@@ -408,11 +435,27 @@ main {
 .msg-icon-error { color: var(--colorPaletteRedForeground1); }
 
 /* ---------- Tables ---------- */
+.table-scroll {
+  overflow-x: auto;
+}
+
 .visitors-table {
   width: 100%;
+  min-width: 640px;
   border-collapse: collapse;
   font-size: var(--body1FontSize);
 }
+
+.purpose-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--borderRadiusCircular);
+  font-size: var(--caption1FontSize);
+  font-weight: 600;
+}
+.purpose-official { background: var(--colorBrandTint); color: var(--colorBrandForeground1); }
+.purpose-personal { background: var(--colorNeutralBackground3); color: var(--colorNeutralForeground2); }
+.purpose-other { background: var(--colorPaletteMarigoldBackground1); color: var(--colorPaletteMarigoldForeground1); }
 
 .visitors-table th {
   text-align: left;
@@ -503,6 +546,11 @@ main {
 .status-out {
   background: var(--colorNeutralBackground3);
   color: var(--colorNeutralForeground3);
+}
+
+.status-late {
+  background: var(--colorPaletteMarigoldBackground1);
+  color: var(--colorPaletteMarigoldForeground1);
 }
 
 /* ---------- Toast ---------- */

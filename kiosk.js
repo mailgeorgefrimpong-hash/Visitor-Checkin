@@ -17,9 +17,42 @@ const confirmName = document.getElementById("confirmName");
 
 const nameInput = document.getElementById("visitorName");
 const phoneInput = document.getElementById("visitorPhone");
+const emailInput = document.getElementById("visitorEmail");
 const hostInput = document.getElementById("visitorHost");
+const purposeInput = document.getElementById("visitorPurpose");
 
 form.addEventListener("submit", handleSubmit);
+
+// Validates a phone number, enforcing completeness for Ghanaian numbers
+// specifically (starting with 0, or the 233 country code) — numbers that
+// don't match a Ghana pattern are accepted with just a loose sanity check,
+// since visitors legitimately have non-Ghana numbers too.
+function validatePhone(raw) {
+  const digits = String(raw || "").replace(/\D/g, "");
+  if (digits.startsWith("2330")) {
+    return { ok: false, message: "That looks like both a country code (233) and a leading 0 — use one or the other, not both." };
+  }
+  if (digits.startsWith("0")) {
+    if (digits.length !== 10) {
+      return { ok: false, message: `Ghana numbers starting with 0 should have 10 digits total (this has ${digits.length}).` };
+    }
+    return { ok: true };
+  }
+  if (digits.startsWith("233")) {
+    if (digits.length !== 12) {
+      return { ok: false, message: `Ghana numbers with the 233 country code should have 12 digits total (this has ${digits.length}).` };
+    }
+    return { ok: true };
+  }
+  if (digits.length < 7 || digits.length > 15) {
+    return { ok: false, message: "That doesn't look like a complete phone number." };
+  }
+  return { ok: true };
+}
+
+function isValidEmail(str) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(str || "").trim());
+}
 
 let idleHandle = null;
 function armIdleReset() {
@@ -38,8 +71,20 @@ async function handleSubmit(e) {
 
   const name = nameInput.value.trim();
   const phone = phoneInput.value.trim();
+  const email = emailInput.value.trim();
   const host = hostInput.value.trim();
-  if (!name || !phone || !host) return;
+  const purpose = purposeInput.value;
+  if (!name || !phone || !email || !host || !purpose) return;
+
+  const phoneCheck = validatePhone(phone);
+  if (!phoneCheck.ok) {
+    showError(phoneCheck.message);
+    return;
+  }
+  if (!isValidEmail(email)) {
+    showError("That email address doesn't look complete — please check it and try again.");
+    return;
+  }
 
   btn.disabled = true;
   try {
@@ -47,7 +92,7 @@ async function handleSubmit(e) {
     const res = await fetch(window.KIOSK_CONFIG.checkinEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, phone, host, turnstileToken }),
+      body: JSON.stringify({ name, phone, email, host, purpose, turnstileToken }),
     });
     const data = await res.json();
 
