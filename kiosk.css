@@ -32,7 +32,9 @@
   height: 360px;
   bottom: -160px;
   right: -100px;
-  background: var(--colorPaletteGreenForeground1);
+  /* Teal, not the same green as blob-a — echoes the 24H+ mark's own
+     hills-to-water color journey rather than one flat brand color. */
+  background: var(--colorAccentTeal);
   opacity: 0.18;
 }
 
@@ -55,20 +57,26 @@
   animation: fadeInUp 0.25s var(--easeStandard);
 }
 
+/* White card, not a colored gradient — the 24H+ mark is already full
+   color (green/yellow-green/teal); a colored background behind it would
+   fight those colors instead of letting the real logo read clearly. */
 .kiosk-badge {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   margin: 0 auto 20px auto;
   border-radius: var(--borderRadiusXLarge);
-  background: linear-gradient(155deg, var(--colorBrandGradientStart), var(--colorBrandGradientEnd));
-  color: #fff;
+  background: #ffffff;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow8);
 }
 
+.kiosk-badge img { width: 100%; height: 100%; object-fit: contain; }
+
 .kiosk-title {
+  font-family: var(--fontFamilyDisplay);
   font-size: 32px;
   line-height: 40px;
   font-weight: 700;
@@ -218,4 +226,13 @@
   font-size: 22px;
   color: var(--colorBrandForeground1);
   margin-top: 4px;
+}
+
+.kiosk-footer {
+  text-align: center;
+  margin: 20px 0 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--colorNeutralForeground3);
 }

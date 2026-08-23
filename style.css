@@ -1,20 +1,31 @@
 /* ============================================================
-   Fluent 2 design tokens (Microsoft's design system — Web, light theme)
-   Hand-authored as CSS custom properties rather than pulling in the
-   Fluent web-components library, so this stays a dependency-light
-   static page — appropriate for a front-desk kiosk that must always
-   just work.
+   Fluent 2 design tokens (Microsoft's design system — Web, light theme),
+   re-themed to the 24H+ Secretariat's own brand (colors + wordmark font
+   sampled directly from 24hplus.gov.gh — the logo's sunrise → farmland →
+   river mark reads as green/yellow-green/teal, and headings there use
+   Rubik over a Roboto body face). Hand-authored as CSS custom properties
+   rather than pulling in the Fluent web-components library, so this
+   stays a dependency-light static page — appropriate for a front-desk
+   kiosk that must always just work.
    ============================================================ */
 :root {
-  /* Brand ramp */
-  --colorBrandBackground: #0f6cbd;
-  --colorBrandBackgroundHover: #115ea3;
-  --colorBrandBackgroundPressed: #0c3b5e;
-  --colorBrandForeground1: #115ea3;
-  --colorCompoundBrandStroke: #0f6cbd;
-  --colorBrandTint: #eff6fc;
-  --colorBrandGradientStart: #2886de;
-  --colorBrandGradientEnd: #0a4d85;
+  /* Brand ramp — 24H+ green (from the wordmark's "OUR/ECONOMY" text and
+     the CTA buttons on 24hplus.gov.gh, both ~#009147/#109048) */
+  --colorBrandBackground: #0f8a46;
+  --colorBrandBackgroundHover: #12a050;
+  --colorBrandBackgroundPressed: #0a6b37;
+  --colorBrandForeground1: #0b7a3e;
+  --colorCompoundBrandStroke: #0f8a46;
+  --colorBrandTint: #e6f7ec;
+  /* Gradient runs green -> teal, echoing the logo mark's own hills-to-
+     water motion rather than a generic brand-color-to-itself fade. */
+  --colorBrandGradientStart: #1dbd5e;
+  --colorBrandGradientEnd: #128c82;
+
+  /* Secondary brand accents sampled from the logo mark itself */
+  --colorAccentTeal: #128c82;
+  --colorAccentTealTint: #e3f5f3;
+  --colorAccentSun: #c9b916; /* the logo's sunburst yellow-green, darkened for text/icon contrast — used sparingly as a decorative accent, not for body text */
 
   /* Neutral ramp */
   --colorNeutralForeground1: #242424; /* primary text */
@@ -59,8 +70,12 @@
   --durFast: 0.1s;
   --durNormal: 0.18s;
 
-  /* Type ramp (Fluent 2 "Web" sizes) */
-  --fontFamilyBase: "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  /* Type ramp (Fluent 2 "Web" sizes) — Roboto/Rubik sampled from
+     24hplus.gov.gh (Roboto for body copy, Rubik for headings there).
+     Loaded via Google Fonts in each HTML file's <head>; the system-font
+     fallback chain still runs first-paint before the web font loads. */
+  --fontFamilyBase: "Roboto", "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  --fontFamilyDisplay: "Rubik", "Roboto", "Segoe UI Variable Text", -apple-system, BlinkMacSystemFont, sans-serif;
   --caption1FontSize: 12px;
   --caption1LineHeight: 16px;
   --body1FontSize: 14px;
@@ -83,14 +98,18 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --colorBrandBackground: #115ea3;
-    --colorBrandBackgroundHover: #4f9ed9;
-    --colorBrandBackgroundPressed: #0c3b5e;
-    --colorBrandForeground1: #62abe4;
-    --colorCompoundBrandStroke: #479ef5;
-    --colorBrandTint: #12283b;
-    --colorBrandGradientStart: #3593e6;
-    --colorBrandGradientEnd: #0d3a63;
+    --colorBrandBackground: #1dbd5e;
+    --colorBrandBackgroundHover: #2ed370;
+    --colorBrandBackgroundPressed: #14a050;
+    --colorBrandForeground1: #4cd87e;
+    --colorCompoundBrandStroke: #2ed370;
+    --colorBrandTint: #0f2a18;
+    --colorBrandGradientStart: #2ed370;
+    --colorBrandGradientEnd: #1aa79c;
+
+    --colorAccentTeal: #2bc4b8;
+    --colorAccentTealTint: #0e2a28;
+    --colorAccentSun: #d8e028;
 
     --colorNeutralForeground1: #f5f5f5;
     --colorNeutralForeground2: #d6d6d6;
@@ -175,21 +194,27 @@ body {
   gap: var(--spacingM);
 }
 
+/* The 24H+ mark is itself full-color (green/yellow-green/teal) — a white
+   card behind it (rather than a colored gradient square, which would
+   fight the logo's own colors) is what makes it read clearly on both
+   the light dashboard topbar and the kiosk's dark hero. */
 .logo-mark {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--borderRadiusMedium);
-  background: linear-gradient(155deg, var(--colorBrandGradientStart), var(--colorBrandGradientEnd));
-  color: #fff;
+  background: #ffffff;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow4);
+  flex-shrink: 0;
 }
 
-.logo-mark .icon { width: 19px; height: 19px; }
+.logo-mark img { width: 100%; height: 100%; object-fit: contain; }
 
 .topbar h1 {
+  font-family: var(--fontFamilyDisplay);
   font-size: var(--subtitle2FontSize);
   line-height: var(--subtitle2LineHeight);
   margin: 0;
@@ -226,6 +251,7 @@ body {
 }
 
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:active:not(:disabled) { transform: scale(0.97); }
 
 .btn-primary {
   background: var(--colorBrandBackground);
@@ -233,7 +259,7 @@ body {
   box-shadow: var(--shadow2);
 }
 .btn-primary:hover { background: var(--colorBrandBackgroundHover); box-shadow: var(--shadow4); transform: translateY(-1px); }
-.btn-primary:active { background: var(--colorBrandBackgroundPressed); transform: translateY(0); box-shadow: var(--shadow2); }
+.btn-primary:active { background: var(--colorBrandBackgroundPressed); transform: scale(0.97); box-shadow: var(--shadow2); }
 
 .btn-secondary {
   background: var(--colorNeutralBackground1);
@@ -284,12 +310,15 @@ main {
 }
 .stat-icon-brand { background: var(--colorBrandTint); color: var(--colorBrandForeground1); }
 .stat-icon-green { background: var(--colorPaletteGreenTint); color: var(--colorPaletteGreenForeground1); }
+.stat-icon-teal { background: var(--colorAccentTealTint); color: var(--colorAccentTeal); }
 
 .stat-value {
+  font-family: var(--fontFamilyDisplay);
   font-size: var(--title2FontSize);
   line-height: var(--title2LineHeight);
   font-weight: 700;
   color: var(--colorNeutralForeground1);
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
@@ -393,7 +422,8 @@ main {
   gap: var(--spacingXS);
 }
 
-.checkin-form input {
+.checkin-form input,
+.checkin-form select {
   font-family: inherit;
   padding: 8px 10px;
   border: 1px solid var(--colorNeutralStroke1);
@@ -405,9 +435,25 @@ main {
   transition: box-shadow var(--durFast) var(--easeStandard), border-color var(--durFast) var(--easeStandard);
 }
 
-.checkin-form input:hover { border-color: var(--colorNeutralStrokeAccessible); }
+/* Native <select> ignores the color tokens above by default (renders
+   with the OS's own light control chrome) — appearance:none plus a
+   hand-drawn chevron brings it in line with the dark theme like every
+   other field, instead of a jarring white pill. */
+.checkin-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23616161' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 32px;
+}
 
-.checkin-form input:focus {
+.checkin-form select:invalid { color: var(--colorNeutralForeground3); }
+
+.checkin-form input:hover,
+.checkin-form select:hover { border-color: var(--colorNeutralStrokeAccessible); }
+
+.checkin-form input:focus,
+.checkin-form select:focus {
   outline: none;
   border-color: var(--colorNeutralStroke1);
   box-shadow: inset 0 -2px 0 0 var(--colorCompoundBrandStroke);
@@ -536,6 +582,30 @@ main {
   padding: var(--spacingXXL);
 }
 
+/* ---------- Skeleton loading (replaces plain "Loading…" text) ---------- */
+@keyframes skeletonShimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.skeleton-bar {
+  display: inline-block;
+  height: 14px;
+  border-radius: var(--borderRadiusMedium);
+  width: 100%;
+  max-width: 120px;
+  background: linear-gradient(
+    90deg,
+    var(--colorNeutralBackground3) 25%,
+    var(--colorNeutralStroke2) 37%,
+    var(--colorNeutralBackground3) 63%
+  );
+  background-size: 400px 100%;
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-row td { padding: var(--spacingM) var(--spacingM); }
+
 .checkout-btn { padding: 6px 14px; font-size: var(--caption1FontSize); }
 
 /* ---------- Status badges (Fluent Badge-style) ---------- */
@@ -579,12 +649,14 @@ main {
   color: var(--colorNeutralBackground1);
   padding: var(--spacingM) var(--spacingL);
   border-radius: var(--borderRadiusLarge);
+  border-left: 4px solid var(--colorPaletteRedForeground1);
   box-shadow: var(--shadow16);
   font-size: var(--body1FontSize);
   /* min() instead of a flat 320px — on a narrow phone, 320px plus the
      20px right offset can push the left edge past x=0. Always leave
      room for the same offset on the left too. */
   max-width: min(320px, calc(100vw - 2 * var(--spacingXL)));
+  animation: fadeInUp var(--durNormal) var(--easeStandard);
 }
 
 .hidden { display: none !important; }
