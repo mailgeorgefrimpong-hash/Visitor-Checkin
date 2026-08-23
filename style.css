@@ -124,6 +124,14 @@
 
 * { box-sizing: border-box; }
 
+/* overflow-x:hidden on body alone can propagate to the viewport instead of
+   actually clipping (a real CSS quirk) — setting it on html too is the
+   robust way to guarantee nothing (a decorative blob, a wide table, a
+   toast) can ever create page-level horizontal scroll on a phone/tablet. */
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: var(--fontFamilyBase);
@@ -131,6 +139,8 @@ body {
   line-height: var(--body1LineHeight);
   background: var(--colorNeutralBackground2);
   color: var(--colorNeutralForeground1);
+  overflow-x: hidden;
+  width: 100%;
 }
 
 :focus-visible {
@@ -571,7 +581,70 @@ main {
   border-radius: var(--borderRadiusLarge);
   box-shadow: var(--shadow16);
   font-size: var(--body1FontSize);
-  max-width: 320px;
+  /* min() instead of a flat 320px — on a narrow phone, 320px plus the
+     20px right offset can push the left edge past x=0. Always leave
+     room for the same offset on the left too. */
+  max-width: min(320px, calc(100vw - 2 * var(--spacingXL)));
 }
 
 .hidden { display: none !important; }
+
+/* ============================================================
+   Mobile — the dashboard is used mainly on iPhone-class phones
+   (~375-430px wide). These rules stop the stats row, the manual
+   check-in grid, and the log's date-nav row from squeezing a
+   button (or a whole control) past the edge of the screen instead
+   of wrapping or shrinking to fit.
+   ============================================================ */
+@media (max-width: 600px) {
+  main {
+    padding: var(--spacingL);
+  }
+
+  .topbar {
+    padding: var(--spacingM) var(--spacingL);
+    flex-wrap: wrap;
+    gap: var(--spacingS);
+  }
+
+  .panel {
+    padding: var(--spacingL);
+  }
+
+  .stats-row {
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    flex: 1 1 140px;
+  }
+
+  .refresh-btn {
+    margin-left: 0;
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .checkin-form {
+    grid-template-columns: 1fr;
+  }
+
+  .checkin-form button {
+    grid-column: 1;
+  }
+
+  .log-header {
+    flex-wrap: wrap;
+    gap: var(--spacingM);
+  }
+
+  .log-nav {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .log-date-input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}

@@ -2,11 +2,11 @@
    Reuses the Fluent 2 tokens defined in style.css. */
 
 .kiosk-body {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  padding: 24px 16px;
   position: relative;
   background:
     radial-gradient(circle at 50% -10%, var(--colorBrandTint) 0%, transparent 55%),

@@ -161,6 +161,10 @@ initTurnstile();
 function showError(text) {
   errorBox.textContent = text;
   errorBox.classList.remove("hidden");
+  // On short tablet viewports / with the on-screen keyboard open, the error
+  // can land below the fold. Bring it into view instead of leaving it
+  // scrolled off-frame where a visitor would never notice it.
+  errorBox.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
 
 function hideError() {
