@@ -52,7 +52,19 @@
               Who are you here to see?
               <div class="kiosk-field">
                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><circle cx="12" cy="10" r="2.2"/><path d="M8 16.5c0-1.9 1.8-3 4-3s4 1.1 4 3"/></svg>
-                <input type="text" id="visitorHost" required autocomplete="off" maxlength="200" />
+                <input
+                  type="text"
+                  id="visitorHost"
+                  required
+                  autocomplete="off"
+                  maxlength="200"
+                  placeholder="Start typing a name…"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-autocomplete="list"
+                  aria-controls="hostResults"
+                />
+                <ul class="typeahead-results hidden" id="hostResults" role="listbox"></ul>
               </div>
             </label>
             <label>

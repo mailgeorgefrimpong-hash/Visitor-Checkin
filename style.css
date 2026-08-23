@@ -730,6 +730,61 @@ main {
 
 .hidden { display: none !important; }
 
+/* ---------- Directory typeahead (the "here to see" host picker) ----------
+   Anchors to the nearest ancestor with position:relative — on the kiosk
+   that's already .kiosk-field; on the dashboard, .typeahead-anchor
+   provides it since the plain input there has no such wrapper. */
+.typeahead-anchor { position: relative; }
+
+.typeahead-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke2);
+  border-radius: var(--borderRadiusLarge);
+  box-shadow: var(--shadow16);
+  max-height: 260px;
+  overflow-y: auto;
+  animation: fadeInUp var(--durFast) var(--easeStandard);
+}
+
+.typeahead-option {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 12px;
+  border-radius: var(--borderRadiusMedium);
+  cursor: pointer;
+}
+
+.typeahead-option-name {
+  font-size: var(--body1FontSize);
+  font-weight: 500;
+  color: var(--colorNeutralForeground1);
+}
+
+.typeahead-option-meta {
+  font-size: var(--caption1FontSize);
+  color: var(--colorNeutralForeground3);
+}
+
+.typeahead-option:hover,
+.typeahead-option.active {
+  background: var(--colorBrandTint);
+}
+
+.typeahead-empty {
+  padding: 10px 12px;
+  font-size: var(--caption1FontSize);
+  color: var(--colorNeutralForeground3);
+}
+
 /* ---------- Staggered list entrance ---------- */
 /* Applied per-row by app.js with an incrementing animation-delay, so a
    freshly rendered table reads as a brief cascade rather than

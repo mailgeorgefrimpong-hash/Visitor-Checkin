@@ -22,6 +22,19 @@ const phoneInput = document.getElementById("visitorPhone");
 const emailInput = document.getElementById("visitorEmail");
 const hostInput = document.getElementById("visitorHost");
 const purposeInput = document.getElementById("visitorPurpose");
+const hostResults = document.getElementById("hostResults");
+
+// checkinEndpoint is either a relative dev path ("/api/checkin") or the
+// full production Worker URL — either way, its origin plus
+// "/directory-search" is the one search URL that's correct in both
+// places, without separate local-vs-production path logic.
+const directorySearchUrl =
+  new URL(window.KIOSK_CONFIG.checkinEndpoint, window.location.href).origin + "/directory-search";
+const hostTypeahead = setupDirectoryTypeahead({
+  input: hostInput,
+  resultsEl: hostResults,
+  searchUrl: directorySearchUrl,
+});
 
 form.addEventListener("submit", handleSubmit);
 
@@ -59,11 +72,138 @@ function isValidEmail(str) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(str || "").trim());
 }
 
+// ---------------------------------------------------------------
+// Directory typeahead — "who are you here to see?" is required to
+// resolve to a real org account, not free text (people without an
+// Entra account, e.g. an outside contractor, aren't a valid "host" —
+// only staff with accounts can be visited). Backed by the Worker's
+// (or, locally, server.js's) /directory-search endpoint, which needs
+// User.Read.All (Application) on the robot app registration.
+// ---------------------------------------------------------------
+function setupDirectoryTypeahead({ input, resultsEl, searchUrl }) {
+  let selected = null;
+  let debounceHandle = null;
+  let activeIndex = -1;
+  let currentResults = [];
+  let requestSeq = 0; // guards against a slow earlier request overwriting a newer one
+
+  function closeList() {
+    resultsEl.classList.add("hidden");
+    resultsEl.innerHTML = "";
+    input.setAttribute("aria-expanded", "false");
+    activeIndex = -1;
+    currentResults = [];
+  }
+
+  function setActive(i) {
+    activeIndex = i;
+    resultsEl.querySelectorAll(".typeahead-option").forEach((li, idx) => {
+      li.classList.toggle("active", idx === i);
+    });
+    const activeEl = resultsEl.querySelector(".typeahead-option.active");
+    if (activeEl) activeEl.scrollIntoView({ block: "nearest" });
+  }
+
+  function selectResult(i) {
+    const r = currentResults[i];
+    if (!r) return;
+    selected = r;
+    input.value = r.displayName;
+    closeList();
+  }
+
+  function renderResults(results) {
+    currentResults = results;
+    activeIndex = -1;
+    if (results.length === 0) {
+      resultsEl.innerHTML = '<li class="typeahead-empty">No matches — check the spelling, or ask the front desk.</li>';
+      resultsEl.classList.remove("hidden");
+      input.setAttribute("aria-expanded", "true");
+      return;
+    }
+    resultsEl.innerHTML = results
+      .map(
+        (r, i) => `<li class="typeahead-option" role="option" id="typeahead-opt-${i}">
+          <span class="typeahead-option-name"></span>
+          <span class="typeahead-option-meta"></span>
+        </li>`
+      )
+      .join("");
+    // Text set via textContent, not string-interpolated into the HTML
+    // above — a directory display name is still untrusted input as far
+    // as this page is concerned, so it shouldn't be able to inject markup.
+    resultsEl.querySelectorAll(".typeahead-option").forEach((li, i) => {
+      li.querySelector(".typeahead-option-name").textContent = results[i].displayName;
+      li.querySelector(".typeahead-option-meta").textContent = results[i].jobTitle || results[i].mail;
+      // mousedown, not click — it fires before the input's blur handler,
+      // so a mouse/touch selection isn't cancelled by blur closing the
+      // list first.
+      li.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        selectResult(i);
+      });
+    });
+    resultsEl.classList.remove("hidden");
+    input.setAttribute("aria-expanded", "true");
+  }
+
+  async function runSearch(q) {
+    const seq = ++requestSeq;
+    try {
+      const res = await fetch(`${searchUrl}?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      if (seq !== requestSeq) return; // a newer keystroke has already started a fresher request
+      renderResults((data && data.results) || []);
+    } catch {
+      if (seq !== requestSeq) return;
+      renderResults([]);
+    }
+  }
+
+  input.addEventListener("input", () => {
+    selected = null; // typing after a selection invalidates it
+    const q = input.value.trim();
+    clearTimeout(debounceHandle);
+    if (q.length < 2) {
+      closeList();
+      return;
+    }
+    debounceHandle = setTimeout(() => runSearch(q), 250);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (resultsEl.classList.contains("hidden") || currentResults.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActive(Math.min(activeIndex + 1, currentResults.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActive(Math.max(activeIndex - 1, 0));
+    } else if (e.key === "Enter" && activeIndex >= 0) {
+      e.preventDefault();
+      selectResult(activeIndex);
+    } else if (e.key === "Escape") {
+      closeList();
+    }
+  });
+
+  input.addEventListener("blur", () => setTimeout(closeList, 100));
+
+  return {
+    isValidSelection: () => !!selected && selected.displayName === input.value.trim(),
+    clear: () => {
+      selected = null;
+      closeList();
+    },
+  };
+}
+
 let idleHandle = null;
 function armIdleReset() {
   clearTimeout(idleHandle);
   idleHandle = setTimeout(() => {
     form.reset();
+    hostTypeahead.clear();
     hideError();
   }, IDLE_RESET_MS);
 }
@@ -80,6 +220,12 @@ async function handleSubmit(e) {
   const host = hostInput.value.trim();
   const purpose = purposeInput.value;
   if (!name || !phone || !host || !purpose) return;
+
+  if (!hostTypeahead.isValidSelection()) {
+    showError("Please choose a name from the list for who you're here to see.");
+    hostInput.focus();
+    return;
+  }
 
   const phoneCheck = validatePhone(phone);
   if (!phoneCheck.ok) {
@@ -124,6 +270,7 @@ function showConfirmation(name) {
   formPanel.classList.add("hidden");
   confirmPanel.classList.remove("hidden");
   form.reset();
+  hostTypeahead.clear();
   resetTurnstile();
 
   setTimeout(() => {

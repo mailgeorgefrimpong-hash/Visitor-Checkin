@@ -173,6 +173,12 @@
 
 .kiosk-field select:invalid { color: var(--colorNeutralForeground3); }
 
+/* Bigger touch targets for the host typeahead than the dashboard's —
+   matches the kiosk's larger 20px input text. */
+.kiosk-field .typeahead-option { padding: 12px 14px; }
+.kiosk-field .typeahead-option-name { font-size: 17px; }
+.kiosk-field .typeahead-option-meta { font-size: 14px; }
+
 .kiosk-field input:focus,
 .kiosk-field select:focus {
   outline: none;
