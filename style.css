@@ -367,6 +367,13 @@ main {
   align-items: end;
 }
 
+.optional-tag {
+  font-weight: 400;
+  color: var(--colorNeutralForeground3);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .checkin-form label {
   display: flex;
   flex-direction: column;

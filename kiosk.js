@@ -77,14 +77,14 @@ async function handleSubmit(e) {
   const email = emailInput.value.trim();
   const host = hostInput.value.trim();
   const purpose = purposeInput.value;
-  if (!name || !phone || !email || !host || !purpose) return;
+  if (!name || !phone || !host || !purpose) return;
 
   const phoneCheck = validatePhone(phone);
   if (!phoneCheck.ok) {
     showError(phoneCheck.message);
     return;
   }
-  if (!isValidEmail(email)) {
+  if (email && !isValidEmail(email)) {
     showError("That email address doesn't look complete — please check it and try again.");
     return;
   }
