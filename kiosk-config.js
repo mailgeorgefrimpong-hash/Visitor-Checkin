@@ -3,7 +3,7 @@
 // - Once deployed to GitHub Pages, change this to your Cloudflare Worker's
 //   URL (see cloudflare-worker/README.md) and re-publish this file.
 window.KIOSK_CONFIG = {
-  checkinEndpoint: "/api/checkin",
+  checkinEndpoint: "https://vms-checkin.24hplus-vms.workers.dev",
 
   // Optional bot/abuse protection (Cloudflare Turnstile). Leave null until
   // you've set up a Turnstile widget in the Cloudflare dashboard — this is
