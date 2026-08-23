@@ -134,7 +134,11 @@ function setupDirectoryTypeahead({ input, resultsEl, searchUrl }) {
     // as this page is concerned, so it shouldn't be able to inject markup.
     resultsEl.querySelectorAll(".typeahead-option").forEach((li, i) => {
       li.querySelector(".typeahead-option-name").textContent = results[i].displayName;
-      li.querySelector(".typeahead-option-meta").textContent = results[i].jobTitle || results[i].mail;
+      // Always show the email, not just as a fallback when there's no
+      // job title — it's the one field that's guaranteed unique, so it's
+      // what actually lets someone tell two "Kwame Mensah"s apart.
+      const r = results[i];
+      li.querySelector(".typeahead-option-meta").textContent = r.jobTitle ? `${r.jobTitle} · ${r.mail}` : r.mail;
       // mousedown, not click — it fires before the input's blur handler,
       // so a mouse/touch selection isn't cancelled by blur closing the
       // list first.
