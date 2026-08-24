@@ -171,7 +171,7 @@
   padding-right: 44px;
 }
 
-.kiosk-field select:invalid { color: var(--colorNeutralForeground3); }
+.kiosk-field select:invalid { color: var(--colorPlaceholder); }
 
 /* Bigger touch targets for the host typeahead than the dashboard's —
    matches the kiosk's larger 20px input text. */

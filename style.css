@@ -48,6 +48,12 @@
   --colorNeutralStroke2: #e5e5e5; /* subtle border */
   --colorNeutralStrokeAccessible: #616161;
   --colorStrokeFocus2: #000000;
+  /* Deliberately dimmer than --colorNeutralForeground3 (already the
+     "muted label" color) — a placeholder should read as an absent
+     value receding into the field, not as text competing with a real
+     answer. Blended toward the field's own background rather than a
+     flat gray so it automatically stays subtle in both themes. */
+  --colorPlaceholder: color-mix(in srgb, var(--colorNeutralForeground3) 50%, var(--colorNeutralBackground1) 50%);
 
   /* Status ramps (Fluent palette, background1/foreground1/border) */
   --colorPaletteRedBackground1: #fdf3f4;
@@ -180,6 +186,14 @@ body {
 :focus-visible {
   outline: 2px solid var(--colorStrokeFocus2);
   outline-offset: 2px;
+}
+
+/* Every text input/textarea on both surfaces, in one place — explicit
+   opacity:1 overrides Firefox's UA default of 0.54, which would double-
+   dim an already-muted color inconsistently across browsers. */
+::placeholder {
+  color: var(--colorPlaceholder);
+  opacity: 1;
 }
 
 .icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
@@ -498,7 +512,7 @@ main {
   padding-right: 32px;
 }
 
-.checkin-form select:invalid { color: var(--colorNeutralForeground3); }
+.checkin-form select:invalid { color: var(--colorPlaceholder); }
 
 .checkin-form input:hover,
 .checkin-form select:hover { border-color: var(--colorNeutralStrokeAccessible); }
