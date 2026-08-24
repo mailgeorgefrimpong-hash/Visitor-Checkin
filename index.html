@@ -4,11 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Visitor Check-In</title>
+<!-- ?v=N below is a manual cache-buster — bump it (here and in the
+     matching <script> tags) on every deploy that touches style.css/
+     kiosk.css/kiosk.js/kiosk-config.js. See index.html's <head> for
+     the full rationale; kept identical here. -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="kiosk.css" />
+<link rel="stylesheet" href="style.css?v=1" />
+<link rel="stylesheet" href="kiosk.css?v=1" />
 </head>
 <body class="kiosk-body">
 
@@ -107,7 +111,7 @@
     <p class="kiosk-footer">24H+ Secretariat — Visitor Management</p>
   </main>
 
-  <script src="kiosk-config.js"></script>
-  <script src="kiosk.js"></script>
+  <script src="kiosk-config.js?v=1"></script>
+  <script src="kiosk.js?v=1"></script>
 </body>
 </html>
