@@ -577,6 +577,27 @@ main {
   font-size: var(--body1FontSize);
 }
 
+/* The empty-state message is a single colspan cell, centered — but
+   centered *across the forced 640px min-width*, not the narrow phone
+   viewport actually showing it. On a ~390px screen that puts the
+   center of "No one currently checked in." well past the visible
+   edge, so it silently requires a horizontal scroll to even see it
+   was there at all. There's no real tabular data to justify the
+   640px floor when this is the only row, so drop it in that case and
+   let the table (and the centered text inside it) size to the actual
+   container width instead. */
+.visitors-table:has(.empty-row) {
+  min-width: 0;
+  /* Dropping min-width isn't enough on its own — table-layout:auto (the
+     default) still expands the table to fit its content regardless of
+     width:100%, ignoring the container entirely once the padded message
+     needs more room than the actual viewport has. table-layout:fixed
+     makes width:100% a hard constraint instead of a hint: the table is
+     forced to the container's real width, and the text wraps inside
+     that instead of pushing the table wider than the screen. */
+  table-layout: fixed;
+}
+
 .purpose-pill {
   display: inline-block;
   padding: 2px 10px;
