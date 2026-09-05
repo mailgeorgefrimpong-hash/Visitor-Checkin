@@ -195,6 +195,9 @@ function setupDirectoryTypeahead({ input, resultsEl, searchUrl }) {
 
   return {
     isValidSelection: () => !!selected && selected.displayName === input.value.trim(),
+    // The selected directory entry's email — used to send the "you have a
+    // visitor" notification. Only meaningful when isValidSelection() is true.
+    getSelectedEmail: () => (selected ? selected.mail : null),
     clear: () => {
       selected = null;
       closeList();
@@ -249,7 +252,15 @@ async function handleSubmit(e) {
     const res = await fetch(window.KIOSK_CONFIG.checkinEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, phone, email, host, purpose, turnstileToken }),
+      body: JSON.stringify({
+        name,
+        phone,
+        email,
+        host,
+        hostEmail: hostTypeahead.getSelectedEmail(),
+        purpose,
+        turnstileToken,
+      }),
     });
     const data = await res.json();
 
